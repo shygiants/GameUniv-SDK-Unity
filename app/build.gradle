@@ -39,12 +39,12 @@ dependencies {
 }
 
 task deleteOldJar(type: Delete) {
-    delete 'release/AndroidPlugin.jar'
+    delete 'release/Plugins/Android/AndroidPlugin.jar'
 }
 
 task exportJar(type: Copy) {
     from('build/intermediates/bundles/release/')
-    into('release/')
+    into('release/Plugins/Android/')
     include('classes.jar')
     rename('classes.jar', 'AndroidPlugin.jar')
 }

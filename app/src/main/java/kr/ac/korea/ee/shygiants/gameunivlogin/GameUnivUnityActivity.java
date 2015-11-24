@@ -17,6 +17,8 @@ public class GameUnivUnityActivity extends UnityPlayerActivity {
     private static final int AUTH_CODE_REQUEST = 1;
     private static final String AUTH_CODE = "AUTH_CODE";
 
+    private AccessTokenCallback callback;
+
     private String authCode;
     private String gameId;
     private String gameSecret;
@@ -32,9 +34,11 @@ public class GameUnivUnityActivity extends UnityPlayerActivity {
         requestAccessToken();
     }
 
-    public void attemptLogin(String gameId, String gameSecret) {
+    public void attemptLogin(String gameId, String gameSecret, AccessTokenCallback callback) {
         this.gameId = gameId;
         this.gameSecret = gameSecret;
+
+        this.callback = callback;
 
         requestAuthCode();
     }
@@ -54,6 +58,7 @@ public class GameUnivUnityActivity extends UnityPlayerActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     accessToken = response.getString("access_token");
+                    callback.onGettingAccessToken(accessToken);
                     Log.i("GameUnivUnityActivity", accessToken);
                 } catch (JSONException e) {
                     e.printStackTrace();
