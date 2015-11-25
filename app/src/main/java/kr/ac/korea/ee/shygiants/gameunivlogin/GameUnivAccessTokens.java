@@ -9,7 +9,8 @@ import com.loopj.android.http.RequestParams;
  */
 public class GameUnivAccessTokens {
 
-    private final static String apiEndPoint = "10.16.28.63";
+//    private final static String apiEndPoint = "10.16.28.63";
+    private final static String apiEndPoint = "192.168.0.26";
     private final static String port = "3000";
     private final static String accessTokenRoute = "/accessTokens";
 
