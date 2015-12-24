@@ -2,15 +2,12 @@ package kr.ac.korea.ee.shygiants.gameunivlogin;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.unity3d.player.UnityPlayerActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class GameUnivUnityActivity extends UnityPlayerActivity {
 
@@ -53,21 +50,19 @@ public class GameUnivUnityActivity extends UnityPlayerActivity {
     }
 
     private void requestAccessToken() {
-        GameUnivAccessTokens.getAccessToken(authCode, gameId, gameSecret, new JsonHttpResponseHandler() {
+        AccessTokenRequest request = new AccessTokenRequest(authCode, gameId);
+        RESTAPI.Tokens.getAccessToken(gameSecret, request).enqueue(new Callback<AccessToken>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    accessToken = response.getString("access_token");
-                    callback.onGettingAccessToken(accessToken);
-                    Log.i("GameUnivUnityActivity", accessToken);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Response<AccessToken> response, Retrofit retrofit) {
+                // TODO: Make use of expires_in
+                AccessToken accessToken = response.body();
+                callback.onGettingAccessToken(accessToken.getAccessToken());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
             }
         });
-    }
-
-    public String getAccessToken() {
-        return accessToken;
     }
 }
