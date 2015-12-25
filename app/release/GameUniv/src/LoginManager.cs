@@ -15,7 +15,7 @@ namespace GameUniv {
 
 		private AndroidJavaObject mainActivity;
 		
-		private Action<string> accessTokenTarget;
+		private Action<LoginResult> target;
 		private string accessToken;
 
 		public LoginManager(string gameId, string gameSecret) : base("kr.ac.korea.ee.shygiants.gameunivlogin.AccessTokenCallback") {
@@ -34,26 +34,29 @@ namespace GameUniv {
 			return singleton;
 		}
 		
-		public void Login(Action<string> callback = null) {
-			accessTokenTarget = callback;
+		public void Login(Action<LoginResult> callback = null) {
+			// TODO: Throw exception
+			if (callback == null) return;
+			target = callback;
 			mainActivity.Call("attemptLogin", gameId, gameSecret, this);
 		}
 		
 		// Callback function for java interface
 		void onGettingAccessToken(string accessToken) {
 			this.accessToken = accessToken;
-			if (accessTokenTarget != null)
-				accessTokenTarget(accessToken);
+			Request getUser = new Request(Request.Method.GET, "/users");
+			getUser.Send((hashTable) => {
+				LoginResult loginResult = new LoginResult();
+				loginResult.SetAccessToken(accessToken);
+				loginResult.SetUser(new User(hashTable));
+
+				target(loginResult);
+			});
 		}
-		
-		public static void GetAccessToken(Action<string> callback) {
-			if (singleton == null) return;
-			
-			string accessToken = singleton.accessToken;
-			if (accessToken != null)
-				callback(accessToken);
-			else
-				singleton.accessTokenTarget = callback;
+
+		public string GetAccessToken() {
+			// TODO: If access token is null, throw exception
+			return accessToken;
 		}
 	}
 }

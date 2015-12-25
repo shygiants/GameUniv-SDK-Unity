@@ -8,7 +8,7 @@ namespace GameUniv {
 		//"56483348e036805d66989c37"
 		//"qaYa86jN6QcKM1WOVUbE"
 
-		private static string apiEndPoint = "192.168.0.4";
+		private static string apiEndPoint = "192.168.0.7";
 		private static string port = "3000";
 		public static string url = "http://" + apiEndPoint + ":" + port;
 		

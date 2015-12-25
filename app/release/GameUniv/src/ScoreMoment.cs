@@ -2,22 +2,22 @@
 using System.Collections;
 
 namespace GameUniv {
-	public class ContentMoment : Moment {
+	public class ScoreMoment : Moment {
 
-		private string content;
+		private string score;
 
-		public ContentMoment(string content) {
-			this.content = content;
+		public ScoreMoment(string score) {
+			this.score = score;
 		}
 
 		public override WWWForm ToWWWForm() {
 			WWWForm form = new WWWForm();
-			form.AddField("content", content);
+			form.AddField("score", score);
 			return form;
 		}
 
 		protected override string GetRoute() {
-			return "/moments";
+			return "/moments/score";
 		}
 	}
 }
