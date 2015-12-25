@@ -34,7 +34,7 @@ namespace GameUniv {
 			return singleton;
 		}
 		
-		public void Login(Action<LoginResult> callback = null) {
+		public void Login(Action<LoginResult> callback) {
 			// TODO: Throw exception
 			if (callback == null) return;
 			target = callback;
